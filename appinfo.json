@@ -1,0 +1,35 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "rgarth@gmail.com",
+    "longName": "Digital Power",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/TickingTimebombBB.ttf",
+                "name": "FONT_TICKING_TIME_BOME_18",
+                "type": "font"
+            },
+            {
+                "file": "fonts/TickingTimebombBB.ttf",
+                "name": "FONT_TICKING_TIME_BOME_52",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Digital Power",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
