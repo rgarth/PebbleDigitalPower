@@ -4,5 +4,5 @@ A very simple simple LCD style digital watchface, LCD color changes depedning on
 
 \> 65% - Green  
 \> 32% - Orange  
-\>  0% - Read  
+\>  0% - Red  
 
