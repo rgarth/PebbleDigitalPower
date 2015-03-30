@@ -86,6 +86,8 @@ static void main_window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer)); 
 
   // Add a bluetooth layer
+  // Having composite issues on aplite, so only use icon on basalt
+  #ifdef PBL_PLATFORM_BASALT
   int bluetooth_xorigin = 0 + ((144 - time_size.w) / 2);
   s_bluetooth_layer = bitmap_layer_create(GRect(bluetooth_xorigin, 54, 18, 18));
   bitmap_layer_set_background_color(s_bluetooth_layer, GColorWhite);
@@ -97,14 +99,18 @@ static void main_window_load(Window *window) {
     APP_LOG(APP_LOG_LEVEL_INFO, "No bluetooth");
     layer_set_hidden(bitmap_layer_get_layer(s_bluetooth_layer), 1);
   }
+  #endif
 }
 
 static void main_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
+  
+  #ifdef PBL_PLATFORM_BASALT
   gbitmap_destroy(s_bluetooth_bmap);
   bitmap_layer_destroy(s_bluetooth_layer);
+  #endif
 } 
 
 static void init () {
