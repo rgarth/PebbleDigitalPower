@@ -2,6 +2,8 @@
 
 static Window *s_main_window; 
 static TextLayer *s_time_layer, *s_date_layer;
+static BitmapLayer *s_bluetooth_layer;
+static GBitmap *s_bluetooth_bmap;
 
 static void show_time() {
   #ifdef PBL_COLOR
@@ -16,7 +18,8 @@ static void show_time() {
     my_color = GColorRed;
   }
   text_layer_set_text_color(s_time_layer, my_color);
-  text_layer_set_text_color(s_date_layer, my_color);  
+  text_layer_set_text_color(s_date_layer, my_color);
+  bitmap_layer_set_background_color(s_bluetooth_layer, my_color);
   #endif
   
   // Get a tm structure
@@ -49,10 +52,11 @@ static void bt_handler(bool connected) {
   if (connected) {
     APP_LOG(APP_LOG_LEVEL_INFO, "Phone has connected!");
     vibes_short_pulse();
-    
+    layer_set_hidden(bitmap_layer_get_layer(s_bluetooth_layer), 0);
   } else {
     APP_LOG(APP_LOG_LEVEL_INFO, "Phone has disconnected!");
-    vibes_double_pulse(); 
+    vibes_double_pulse();
+    layer_set_hidden(bitmap_layer_get_layer(s_bluetooth_layer), 1);
   }
   
 }
@@ -80,12 +84,27 @@ static void main_window_load(Window *window) {
 
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer)); 
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer)); 
+
+  // Add a bluetooth layer
+  int bluetooth_xorigin = 0 + ((144 - time_size.w) / 2);
+  s_bluetooth_layer = bitmap_layer_create(GRect(bluetooth_xorigin, 54, 18, 18));
+  bitmap_layer_set_background_color(s_bluetooth_layer, GColorWhite);
+  bitmap_layer_set_compositing_mode(s_bluetooth_layer, GCompOpSet);
+  s_bluetooth_bmap = gbitmap_create_with_resource(RESOURCE_ID_IMG_BLUETOOTH);
+  bitmap_layer_set_bitmap(s_bluetooth_layer, s_bluetooth_bmap);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_bluetooth_layer));
+  if (! bluetooth_connection_service_peek()) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "No bluetooth");
+    layer_set_hidden(bitmap_layer_get_layer(s_bluetooth_layer), 1);
+  }
 }
 
 static void main_window_unload(Window *window) {
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
+  gbitmap_destroy(s_bluetooth_bmap);
+  bitmap_layer_destroy(s_bluetooth_layer);
 } 
 
 static void init () {

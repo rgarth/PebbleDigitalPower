@@ -9,13 +9,18 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/TickingTimebombBB.ttf",
-                "name": "FONT_TICKING_TIME_BOME_18",
-                "type": "font"
+                "file": "data/bluetooth_18.png",
+                "name": "IMG_BLUETOOTH",
+                "type": "raw"
             },
             {
                 "file": "fonts/TickingTimebombBB.ttf",
                 "name": "FONT_TICKING_TIME_BOME_52",
+                "type": "font"
+            },
+            {
+                "file": "fonts/TickingTimebombBB.ttf",
+                "name": "FONT_TICKING_TIME_BOME_18",
                 "type": "font"
             }
         ]
