@@ -1,0 +1,49 @@
+{
+    "appKeys": {
+        "KEY_BATTERY": 0,
+        "KEY_COLOR": 1
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "rgarth@gmail.com",
+    "longName": "Digital Power",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "data/digital-icon.png",
+                "menuIcon": true,
+                "name": "IMG_MENU_ICON",
+                "type": "raw"
+            },
+            {
+                "file": "data/bluetooth_18.png",
+                "name": "IMG_BLUETOOTH",
+                "type": "raw"
+            },
+            {
+                "file": "fonts/TickingTimebombBB.ttf",
+                "name": "FONT_TICKING_TIME_BOME_52",
+                "type": "font"
+            },
+            {
+                "file": "fonts/TickingTimebombBB.ttf",
+                "name": "FONT_TICKING_TIME_BOME_18",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Digital Power",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
