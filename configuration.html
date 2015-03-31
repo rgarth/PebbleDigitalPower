@@ -83,7 +83,7 @@
         });
 
        // Were we passed any values?
-       if (getUrlParameter('battery') == 'true') {
+       if (getUrlParameter('battery').toLowerCase() == 'true') {
           $('input#battery').prop("checked", "true").checkboxradio("refresh");
        }
        if ($('#battery').is(':checked')) {
