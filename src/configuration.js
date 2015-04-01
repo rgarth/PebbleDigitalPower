@@ -12,6 +12,7 @@ Pebble.addEventListener('showConfiguration', function(e) {
 Pebble.addEventListener('webviewclosed',
   function(e) {
     var configuration = JSON.parse(decodeURIComponent(e.response));
+    console.log (configuration.color + '!!!');
     var dictionary = {
       "KEY_BATTERY": configuration.battery,
       "KEY_COLOR": parseInt(configuration.color, 16)

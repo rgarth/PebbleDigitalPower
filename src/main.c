@@ -12,7 +12,6 @@ bool battery = 1;
 #define KEY_COLOR 1
 
 static void show_time() {
-  #ifdef PBL_COLOR
   GColor my_color;
   if (battery) {
     int8_t charge;
@@ -30,7 +29,6 @@ static void show_time() {
   text_layer_set_text_color(s_time_layer, my_color);
   text_layer_set_text_color(s_date_layer, my_color);
   bitmap_layer_set_background_color(s_bluetooth_layer, my_color);
-  #endif
   
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -88,9 +86,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       break;
     case KEY_COLOR:
       // color returned as a hex string
-      color = t->value->int32;
-      APP_LOG(APP_LOG_LEVEL_INFO, "Hex Color Value: %x", color);
-      persist_write_int(KEY_COLOR, color);
+      if (t->value->int32 > 0) {
+        color = t->value->int32;
+        APP_LOG(APP_LOG_LEVEL_INFO, "Hex Color Value: %x", color);
+        persist_write_int(KEY_COLOR, color);
+      }
       break;
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
@@ -137,7 +137,6 @@ static void main_window_load(Window *window) {
 
   // Add a bluetooth layer
   // Having composite issues on aplite, so only use icon on basalt
-  #ifdef PBL_PLATFORM_BASALT
   s_bluetooth_layer = bitmap_layer_create(GRect(12, 54, 18, 18));
   bitmap_layer_set_background_color(s_bluetooth_layer, GColorWhite);
   bitmap_layer_set_compositing_mode(s_bluetooth_layer, GCompOpSet);
@@ -148,7 +147,6 @@ static void main_window_load(Window *window) {
     APP_LOG(APP_LOG_LEVEL_INFO, "No bluetooth");
     layer_set_hidden(bitmap_layer_get_layer(s_bluetooth_layer), 1);
   }
-  #endif
 }
 
 static void main_window_unload(Window *window) {
@@ -156,10 +154,9 @@ static void main_window_unload(Window *window) {
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
   
-  #ifdef PBL_PLATFORM_BASALT
   gbitmap_destroy(s_bluetooth_bmap);
   bitmap_layer_destroy(s_bluetooth_layer);
-  #endif
+
 } 
 
 static void init () {

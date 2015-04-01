@@ -37,7 +37,6 @@
     "sdkVersion": "3",
     "shortName": "Digital Power",
     "targetPlatforms": [
-        "aplite",
         "basalt"
     ],
     "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
