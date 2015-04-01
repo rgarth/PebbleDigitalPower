@@ -101,7 +101,6 @@
 
       function saveOptions() {
         options['battery'] = $('#battery').is(':checked');
-        console.log("battery " + options['battery'] + " color " + options['color']);
         return options;
       }
 
@@ -161,6 +160,7 @@
        if ($('#battery').is(':checked')) {
             $('#color-picker').css('display',  'none');
        }
+       options['color'] = getUrlParameter('color', '55FF00');
 
       });
 
