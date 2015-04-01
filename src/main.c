@@ -4,9 +4,10 @@ static Window *s_main_window;
 static TextLayer *s_time_layer, *s_date_layer;
 static BitmapLayer *s_bluetooth_layer;
 static GBitmap *s_bluetooth_bmap;
-// BrightGreen, 0x55FF00;
+// BrightGreen, 0x55FF00
 int color = 0x55FF00;
 bool battery = 1;
+GFont time_font, date_font;
 
 #define KEY_BATTERY 0
 #define KEY_COLOR 1
@@ -115,8 +116,8 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 } 
 
 static void main_window_load(Window *window) {
-  GFont time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_52));
-  GFont date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_18));
+  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_52));
+  date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_18));
 
   // Create TextLayers for time
   s_time_layer = text_layer_create(GRect(0, 64, 132, 54));
