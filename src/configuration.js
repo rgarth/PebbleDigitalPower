@@ -3,7 +3,8 @@ Pebble.addEventListener('showConfiguration', function(e) {
   if (! battery) { battery = true; }
   var color = localStorage.getItem('color');
   if (! color) { color = "55FF00"; }
-  var URL = 'http://rgarth.github.io/PebbleDigitalPower/configuration.html?' + 
+  //var URL = 'http://rgarth.github.io/PebbleDigitalPower/configuration.html?' + 
+  var URL = 'http://localhost:8000/configuration.html?' + 
       'color=' + color + '&battery=' + battery;
   console.log('Configuration window opened. ' + URL);
   Pebble.openURL(URL);
@@ -12,7 +13,6 @@ Pebble.addEventListener('showConfiguration', function(e) {
 Pebble.addEventListener('webviewclosed',
   function(e) {
     var configuration = JSON.parse(decodeURIComponent(e.response));
-    console.log (configuration.color + '!!!');
     var dictionary = {
       "KEY_BATTERY": configuration.battery,
       "KEY_COLOR": parseInt(configuration.color, 16)

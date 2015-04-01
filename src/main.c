@@ -4,7 +4,7 @@ static Window *s_main_window;
 static TextLayer *s_time_layer, *s_date_layer;
 static BitmapLayer *s_bluetooth_layer;
 static GBitmap *s_bluetooth_bmap;
-// BrightGreen, 0x55FF00 as an integer;
+// BrightGreen, 0x55FF00;
 int color = 0x55FF00;
 bool battery = 1;
 
@@ -14,7 +14,7 @@ bool battery = 1;
 static void show_time() {
   GColor my_color;
   if (battery) {
-    int8_t charge;
+    int charge;
     charge = battery_state_service_peek().charge_percent;
     if ( charge > 65) {
       my_color = GColorBrightGreen;
@@ -81,14 +81,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     switch(t->key) {
     case KEY_BATTERY:
       battery = t->value->int8;
-      APP_LOG(APP_LOG_LEVEL_INFO, "Show charge: %d", battery);
+      APP_LOG(APP_LOG_LEVEL_INFO, "Saving show charge: %d", battery);
       persist_write_bool(KEY_BATTERY, battery);
       break;
     case KEY_COLOR:
       // color returned as a hex string
       if (t->value->int32 > 0) {
         color = t->value->int32;
-        APP_LOG(APP_LOG_LEVEL_INFO, "Hex Color Value: %x", color);
+        APP_LOG(APP_LOG_LEVEL_INFO, "Saving color: %x", color);
         persist_write_int(KEY_COLOR, color);
       }
       break;
@@ -150,6 +150,10 @@ static void main_window_load(Window *window) {
 }
 
 static void main_window_unload(Window *window) {
+  
+  fonts_unload_custom_font(time_font);
+  fonts_unload_custom_font(date_font);
+  
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
   text_layer_destroy(s_date_layer);
@@ -162,12 +166,12 @@ static void main_window_unload(Window *window) {
 static void init () {
   
   if (persist_exists(KEY_BATTERY)) {
-    battery = persist_read_int(KEY_BATTERY);
-    APP_LOG(APP_LOG_LEVEL_INFO, "Show charge: %d", battery);
+    battery = persist_read_bool(KEY_BATTERY);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Reading show charge: %d", battery);
   }
   if (persist_exists(KEY_COLOR)) {
     color = persist_read_int(KEY_COLOR);
-    APP_LOG(APP_LOG_LEVEL_INFO, "Stored Color: %x", color);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Reading color: %x", color);
   }
   
   // Register callbacks
