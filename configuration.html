@@ -142,7 +142,7 @@
         });
 
         function selectColor($polygon) {
-          var hexValue = $polygon.attr('fill');
+          var hexValue = $polygon.attr('fill').replace('#', '');
           console.log (hexValue);
           options['color'] = hexValue;
           $('#color-picker polygon').attr('stroke', '#fff').attr('stroke-width', '1.5');
