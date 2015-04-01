@@ -4,18 +4,28 @@ static Window *s_main_window;
 static TextLayer *s_time_layer, *s_date_layer;
 static BitmapLayer *s_bluetooth_layer;
 static GBitmap *s_bluetooth_bmap;
+// BrightGreen, 0x55FF00 as an integer;
+int color = 0x55FF00;
+bool battery = 1;
+
+#define KEY_BATTERY 0
+#define KEY_COLOR 1
 
 static void show_time() {
   #ifdef PBL_COLOR
-  int8_t charge;
   GColor my_color;
-  charge = battery_state_service_peek().charge_percent;
-  if ( charge > 65) {
-    my_color = GColorBrightGreen;
-  } else if (charge > 32) {
-    my_color = GColorChromeYellow;
+  if (battery) {
+    int8_t charge;
+    charge = battery_state_service_peek().charge_percent;
+    if ( charge > 65) {
+      my_color = GColorBrightGreen;
+    } else if (charge > 32) {
+      my_color = GColorChromeYellow;
+    } else {
+      my_color = GColorRed;
+    }
   } else {
-    my_color = GColorRed;
+    my_color = GColorFromHEX(color);  
   }
   text_layer_set_text_color(s_time_layer, my_color);
   text_layer_set_text_color(s_date_layer, my_color);
@@ -61,22 +71,62 @@ static void bt_handler(bool connected) {
   
 }
 
+static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Message received!");
+
+  // Read first item
+  Tuple *t = dict_read_first(iterator);
+
+  // For all items
+  while(t != NULL) {
+    // Which key was received?
+    switch(t->key) {
+    case KEY_BATTERY:
+      battery = t->value->int8;
+      APP_LOG(APP_LOG_LEVEL_INFO, "Show charge: %d", battery);
+      persist_write_bool(KEY_BATTERY, battery);
+      break;
+    case KEY_COLOR:
+      // color returned as a hex string
+      color = t->value->int32;
+      APP_LOG(APP_LOG_LEVEL_INFO, "Hex Color Value: %x", color);
+      persist_write_int(KEY_COLOR, color);
+      break;
+    default:
+      APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
+      break;
+    }   
+    // Look for next item
+    t = dict_read_next(iterator);
+  }
+  show_time();
+}
+
+static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+} 
+
 static void main_window_load(Window *window) {
-  GFont time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TICKING_TIME_BOME_52));
-  GFont date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TICKING_TIME_BOME_18));
+  GFont time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_52));
+  GFont date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_18));
 
   // Create TextLayers for time
-  s_time_layer = text_layer_create(GRect(0, 64, 144, 54));
+  s_time_layer = text_layer_create(GRect(0, 64, 132, 54));
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_font(s_time_layer, time_font);
-  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(s_time_layer, GTextAlignmentRight);
   text_layer_set_text(s_time_layer, "00:00");
   
-  GSize time_size = text_layer_get_content_size(s_time_layer);
-  int date_width = 144 - ((144 - time_size.w) / 2);
-  
-  s_date_layer = text_layer_create(GRect(0, 52, date_width, 38));
+  s_date_layer = text_layer_create(GRect(0, 52, 132, 38));
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_color(s_date_layer, GColorWhite);
   text_layer_set_font(s_date_layer, date_font);
@@ -88,8 +138,7 @@ static void main_window_load(Window *window) {
   // Add a bluetooth layer
   // Having composite issues on aplite, so only use icon on basalt
   #ifdef PBL_PLATFORM_BASALT
-  int bluetooth_xorigin = 0 + ((144 - time_size.w) / 2);
-  s_bluetooth_layer = bitmap_layer_create(GRect(bluetooth_xorigin, 54, 18, 18));
+  s_bluetooth_layer = bitmap_layer_create(GRect(12, 54, 18, 18));
   bitmap_layer_set_background_color(s_bluetooth_layer, GColorWhite);
   bitmap_layer_set_compositing_mode(s_bluetooth_layer, GCompOpSet);
   s_bluetooth_bmap = gbitmap_create_with_resource(RESOURCE_ID_IMG_BLUETOOTH);
@@ -115,6 +164,23 @@ static void main_window_unload(Window *window) {
 
 static void init () {
   
+  if (persist_exists(KEY_BATTERY)) {
+    battery = persist_read_int(KEY_BATTERY);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Show charge: %d", battery);
+  }
+  if (persist_exists(KEY_COLOR)) {
+    color = persist_read_int(KEY_COLOR);
+    APP_LOG(APP_LOG_LEVEL_INFO, "Stored Color: %x", color);
+  }
+  
+  // Register callbacks
+  app_message_register_inbox_received(inbox_received_callback);
+  app_message_register_inbox_dropped(inbox_dropped_callback);
+  app_message_register_outbox_failed(outbox_failed_callback);
+  app_message_register_outbox_sent(outbox_sent_callback);
+  
+  // Open AppMessage
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
   
   // Create main Window element and assign to pointer
   s_main_window = window_create();  

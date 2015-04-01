@@ -1,7 +1,10 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_BATTERY": 0,
+        "KEY_COLOR": 1
+    },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "rgarth@gmail.com",
     "longName": "Digital Power",
@@ -9,10 +12,14 @@
     "resources": {
         "media": [
             {
-                "file": "data/digital-icon.png",
-                "menuIcon": true,
-                "name": "IMG_MENU_ICON",
-                "type": "raw"
+                "file": "fonts/digital-7 (mono).ttf",
+                "name": "FONT_DIGITAL_SEVEN_18",
+                "type": "font"
+            },
+            {
+                "file": "fonts/digital-7 (mono).ttf",
+                "name": "FONT_DIGITAL_SEVEN_52",
+                "type": "font"
             },
             {
                 "file": "data/bluetooth_18.png",
@@ -20,14 +27,10 @@
                 "type": "raw"
             },
             {
-                "file": "fonts/TickingTimebombBB.ttf",
-                "name": "FONT_TICKING_TIME_BOME_52",
-                "type": "font"
-            },
-            {
-                "file": "fonts/TickingTimebombBB.ttf",
-                "name": "FONT_TICKING_TIME_BOME_18",
-                "type": "font"
+                "file": "data/digital-icon.png",
+                "menuIcon": true,
+                "name": "IMG_MENU_ICON",
+                "type": "raw"
             }
         ]
     },
