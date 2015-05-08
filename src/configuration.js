@@ -13,8 +13,13 @@ Pebble.addEventListener('showConfiguration', function(e) {
 Pebble.addEventListener('webviewclosed',
   function(e) {
     var configuration = JSON.parse(decodeURIComponent(e.response));
+    var showBattery = 0;
+    if (configuration.battery) {
+      showBattery = 1;
+    }
+    console.log('Show Battery = ' + showBattery);
     var dictionary = {
-      "KEY_BATTERY": configuration.battery,
+      "KEY_BATTERY": showBattery,
       "KEY_COLOR": parseInt(configuration.color, 16)
     };
     console.log('Battery ' + configuration.battery);

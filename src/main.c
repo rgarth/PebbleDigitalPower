@@ -45,7 +45,8 @@ static void show_time() {
   } else {
     // Use 12 hour format
     strftime(t_buffer, sizeof(t_buffer), "%l:%M", tick_time);
-  }  
+  } 
+  snprintf(t_buffer, sizeof(t_buffer), "00:00");
   text_layer_set_text(s_time_layer, t_buffer);
   
   static char d_buffer[7];
@@ -81,8 +82,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     // Which key was received?
     switch(t->key) {
     case KEY_BATTERY:
-      battery = t->value->int8;
-      APP_LOG(APP_LOG_LEVEL_INFO, "Saving show charge: %d", battery);
+      battery = t->value->int32;
+      APP_LOG(APP_LOG_LEVEL_INFO, "Saving show charge: %i", battery);
       persist_write_bool(KEY_BATTERY, battery);
       break;
     case KEY_COLOR:
@@ -116,18 +117,18 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 } 
 
 static void main_window_load(Window *window) {
-  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_52));
-  date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_18));
+  time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_62));
+  date_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DIGITAL_SEVEN_24));
 
   // Create TextLayers for time
-  s_time_layer = text_layer_create(GRect(0, 64, 132, 54));
+  s_time_layer = text_layer_create(GRect(0, 48, 142, 64));
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_font(s_time_layer, time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentRight);
   text_layer_set_text(s_time_layer, "00:00");
   
-  s_date_layer = text_layer_create(GRect(0, 52, 132, 38));
+  s_date_layer = text_layer_create(GRect(0, 32, 142, 26));
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_text_color(s_date_layer, GColorWhite);
   text_layer_set_font(s_date_layer, date_font);
@@ -138,7 +139,7 @@ static void main_window_load(Window *window) {
 
   // Add a bluetooth layer
   // Having composite issues on aplite, so only use icon on basalt
-  s_bluetooth_layer = bitmap_layer_create(GRect(12, 54, 18, 18));
+  s_bluetooth_layer = bitmap_layer_create(GRect(2, 38, 18, 18));
   bitmap_layer_set_background_color(s_bluetooth_layer, GColorWhite);
   bitmap_layer_set_compositing_mode(s_bluetooth_layer, GCompOpSet);
   s_bluetooth_bmap = gbitmap_create_with_resource(RESOURCE_ID_IMG_BLUETOOTH);

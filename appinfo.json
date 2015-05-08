@@ -13,12 +13,12 @@
         "media": [
             {
                 "file": "fonts/digital-7 (mono).ttf",
-                "name": "FONT_DIGITAL_SEVEN_18",
+                "name": "FONT_DIGITAL_SEVEN_62",
                 "type": "font"
             },
             {
                 "file": "fonts/digital-7 (mono).ttf",
-                "name": "FONT_DIGITAL_SEVEN_52",
+                "name": "FONT_DIGITAL_SEVEN_24",
                 "type": "font"
             },
             {
@@ -41,7 +41,7 @@
     ],
     "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": true
     }
