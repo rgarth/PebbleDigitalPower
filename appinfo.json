@@ -41,7 +41,7 @@
     ],
     "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
     "versionCode": 1,
-    "versionLabel": "1.2",
+    "versionLabel": "1.3",
     "watchapp": {
         "watchface": true
     }

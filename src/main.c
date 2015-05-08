@@ -46,7 +46,6 @@ static void show_time() {
     // Use 12 hour format
     strftime(t_buffer, sizeof(t_buffer), "%l:%M", tick_time);
   } 
-  snprintf(t_buffer, sizeof(t_buffer), "00:00");
   text_layer_set_text(s_time_layer, t_buffer);
   
   static char d_buffer[7];
