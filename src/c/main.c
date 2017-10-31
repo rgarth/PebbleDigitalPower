@@ -17,10 +17,10 @@ static void show_time() {
   if (battery) {
     int charge;
     charge = battery_state_service_peek().charge_percent;
-    if ( charge > 65) {
+    if ( charge > 50) {
       my_color = GColorBrightGreen;
-    } else if (charge > 32) {
-      my_color = GColorChromeYellow;
+    } else if (charge > 20) {
+      my_color = GColorYellow;
     } else {
       my_color = GColorRed;
     }

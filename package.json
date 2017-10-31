@@ -1,0 +1,52 @@
+{
+    "author": "rgarth@gmail.com",
+    "dependencies": {},
+    "keywords": [],
+    "name": "digital-power",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "Digital Power",
+        "enableMultiJS": false,
+        "messageKeys": {
+            "KEY_BATTERY": 0,
+            "KEY_COLOR": 1
+        },
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "data/digital-icon.png",
+                    "menuIcon": true,
+                    "name": "IMG_MENU_ICON",
+                    "type": "raw"
+                },
+                {
+                    "file": "fonts/digital-7 (mono).ttf",
+                    "name": "FONT_DIGITAL_SEVEN_62",
+                    "type": "font"
+                },
+                {
+                    "file": "fonts/digital-7 (mono).ttf",
+                    "name": "FONT_DIGITAL_SEVEN_24",
+                    "type": "font"
+                },
+                {
+                    "file": "data/bluetooth_18.png",
+                    "name": "IMG_BLUETOOTH",
+                    "type": "raw"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "basalt"
+        ],
+        "uuid": "7aac526b-273f-43ab-83a8-be0ac65ca5dd",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.4.0"
+}
