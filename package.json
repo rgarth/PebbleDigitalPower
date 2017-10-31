@@ -18,7 +18,6 @@
             "media": [
                 {
                     "file": "data/digital-icon.png",
-                    "menuIcon": true,
                     "name": "IMG_MENU_ICON",
                     "type": "raw"
                 },
